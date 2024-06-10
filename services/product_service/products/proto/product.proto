@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+message Product {
+    optional int32 product_id = 1;
+    string product_title = 2;
+    string product_description = 3;
+    float price = 4;
+    string currency = 5;
+    int32 stock = 6;
+    string category = 7;
+    string brand = 8;
+}
+
+enum MessageType {
+    add_product = 0;
+    edit_product = 1;
+    delete_product = 2;
+    get_all_products = 3;
+    get_product_by_id = 4;
+}
+
+message ProductMessage {
+    MessageType message_type = 1;
+    optional Product product_data = 2;
+    optional int32 product_id = 3;
+
+}
