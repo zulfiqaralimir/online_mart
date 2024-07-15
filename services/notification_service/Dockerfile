@@ -14,6 +14,6 @@ RUN pip install poetry \
 && poetry config virtualenvs.create false \
 && poetry install
 
-EXPOSE 8034
+EXPOSE 8000
 
-CMD ["poetry","run","uvicorn","notification_service.main:app","--host","0.0.0.0","--port","8034","--reload"]
+CMD ["poetry","run","uvicorn","notification_service.main:app","--host","0.0.0.0","--port","8000","--reload"]

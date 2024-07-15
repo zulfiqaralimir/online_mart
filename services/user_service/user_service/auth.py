@@ -1,4 +1,5 @@
 """ Authentication for User Management Service """
+import logging
 from datetime import datetime, timezone, timedelta
 from typing import Annotated
 from passlib.context import CryptContext
@@ -6,7 +7,7 @@ from sqlmodel import Session, select
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
-from user_service.models import RefreshTokenData, TokenData, User, Token
+from user_service.models import RefreshTokenData, TokenData, User, Token, Profile
 from user_service.db import get_session
 
 
@@ -14,6 +15,9 @@ SECRET_KEY = 'ed60732905aeb0315e2f77d05a6cb57a0e408eaf2cb9a77a5a2667931c50d4e0'
 ALGORITHYM = 'HS256'
 EXPIRY_TIME = 30
 REFRESH_EXPIRY_DAYS = 7
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/token")
@@ -44,6 +48,21 @@ def get_user_from_db(
         if user:
             return user
     return user
+
+
+def get_user_data_from_db(
+        session: Annotated[Session, Depends(get_session)],
+        username: str
+) -> Profile | None:
+    """ function to get user profile from db """
+
+    statement = select(Profile).where(Profile.username == username)
+    user_profile = session.exec(statement).first()
+    logger.info(f" user_profile: {user_profile}")
+    if not user_profile:
+        return None
+
+    return user_profile
 
 
 def authenticate_user(
@@ -151,3 +170,4 @@ def token_service(user: User) -> Token:
     refresh_token = create_refresh_token(
         {"sub": user.email}, refresh_expire_time)
     return Token(access_token=access_token, token_type="bearer", refresh_token=refresh_token)
+# end-of-file (EOF)

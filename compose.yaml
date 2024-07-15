@@ -7,106 +7,106 @@ x-kong-config: &kong-env
   KONG_PG_PASSWORD_FILE: /run/secrets/kong_postgres_password
 
 services:
-  # # Kong Database new configuration service
-  # kong-migrations:
-  #   image: "${KONG_DOCKER_TAG:-kong:latest}"
-  #   command: kong migrations bootstrap
-  #   profiles: ["database"]
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     <<: *kong-env
-  #   secrets:
-  #     - kong_postgres_password
-  #   restart: on-failure
+  # Kong Database new configuration service
+  kong-migrations:
+    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    command: kong migrations bootstrap
+    profiles: ["database"]
+    depends_on:
+      - db
+    environment:
+      <<: *kong-env
+    secrets:
+      - kong_postgres_password
+    restart: on-failure
 
-  # # Kong Database configuration modification service
-  # kong-migrations-up:
-  #   image: "${KONG_DOCKER_TAG:-kong:latest}"
-  #   command: kong migrations up && kong migrations finish
-  #   profiles: ["database"]
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     <<: *kong-env
-  #   secrets:
-  #     - kong_postgres_password
-  #   restart: on-failure
+  # Kong Database configuration modification service
+  kong-migrations-up:
+    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    command: kong migrations up && kong migrations finish
+    profiles: ["database"]
+    depends_on:
+      - db
+    environment:
+      <<: *kong-env
+    secrets:
+      - kong_postgres_password
+    restart: on-failure
 
-  # # Kong Service
-  # kong:
-  #   image: "${KONG_DOCKER_TAG:-kong:latest}"
-  #   user: "${KONG_USER:-kong}"
-  #   environment:
-  #     <<: *kong-env
-  #     KONG_ADMIN_ACCESS_LOG: /dev/stdout
-  #     KONG_ADMIN_ERROR_LOG: /dev/stderr
-  #     KONG_PROXY_LISTEN: "${KONG_PROXY_LISTEN:-0.0.0.0:8000}"
-  #     KONG_ADMIN_LISTEN: "${KONG_ADMIN_LISTEN:-0.0.0.0:8001}"
-  #     KONG_ADMIN_GUI_LISTEN: "${KONG_ADMIN_GUI_LISTEN:-0.0.0.0:8002}"
-  #     KONG_PROXY_ACCESS_LOG: /dev/stdout
-  #     KONG_PROXY_ERROR_LOG: /dev/stderr
-  #     KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
-  #     # KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
-  #   secrets:
-  #     - kong_postgres_password
-  #   ports:
-  #     # The following two environment variables default to an insecure value (0.0.0.0)
-  #     # according to the CIS Security test.
-  #     - "${KONG_INBOUND_PROXY_LISTEN:-0.0.0.0}:8000:8000/tcp"
-  #     - "${KONG_INBOUND_SSL_PROXY_LISTEN:-0.0.0.0}:8443:8443/tcp"
-  #     # Making them mandatory but undefined, like so would be backwards-breaking:
-  #     # - "${KONG_INBOUND_PROXY_LISTEN?Missing inbound proxy host}:8000:8000/tcp"
-  #     # - "${KONG_INBOUND_SSL_PROXY_LISTEN?Missing inbound proxy ssl host}:8443:8443/tcp"
-  #     # Alternative is deactivating check 5.13 in the security bench, if we consider Kong's own config to be enough security here
+  # Kong Service
+  kong:
+    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    user: "${KONG_USER:-kong}"
+    environment:
+      <<: *kong-env
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_PROXY_LISTEN: "${KONG_PROXY_LISTEN:-0.0.0.0:8000}"
+      KONG_ADMIN_LISTEN: "${KONG_ADMIN_LISTEN:-0.0.0.0:8001}"
+      KONG_ADMIN_GUI_LISTEN: "${KONG_ADMIN_GUI_LISTEN:-0.0.0.0:8002}"
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
+      # KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
+    secrets:
+      - kong_postgres_password
+    ports:
+      # The following two environment variables default to an insecure value (0.0.0.0)
+      # according to the CIS Security test.
+      - "${KONG_INBOUND_PROXY_LISTEN:-0.0.0.0}:8000:8000/tcp"
+      - "${KONG_INBOUND_SSL_PROXY_LISTEN:-0.0.0.0}:8443:8443/tcp"
+      # Making them mandatory but undefined, like so would be backwards-breaking:
+      # - "${KONG_INBOUND_PROXY_LISTEN?Missing inbound proxy host}:8000:8000/tcp"
+      # - "${KONG_INBOUND_SSL_PROXY_LISTEN?Missing inbound proxy ssl host}:8443:8443/tcp"
+      # Alternative is deactivating check 5.13 in the security bench, if we consider Kong's own config to be enough security here
 
-  #     - "127.0.0.1:8001:8001/tcp"
-  #     - "127.0.0.1:8444:8444/tcp"
-  #     - "127.0.0.1:8002:8002/tcp"
-  #   healthcheck:
-  #     test: ["CMD", "kong", "health"]
-  #     interval: 10s
-  #     timeout: 10s
-  #     retries: 10
-  #   restart: on-failure:5
-  #   read_only: true
-  #   volumes:
-  #     - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
-  #     - kong_tmp_vol:/tmp
-  #     # - ./config:/opt/kong
-  #   security_opt:
-  #     - no-new-privileges
+      - "127.0.0.1:8001:8001/tcp"
+      - "127.0.0.1:8444:8444/tcp"
+      - "127.0.0.1:8002:8002/tcp"
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: on-failure:5
+    read_only: true
+    volumes:
+      - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
+      - kong_tmp_vol:/tmp
+      # - ./config:/opt/kong
+    security_opt:
+      - no-new-privileges
 
-  # # Kong Database Service
-  # db:
-  #   image: postgres:9.5
-  #   profiles: ["database"]
-  #   environment:
-  #     POSTGRES_DB: ${KONG_PG_DATABASE:-kong}
-  #     POSTGRES_USER: ${KONG_PG_USER:-kong}
-  #     POSTGRES_PASSWORD_FILE: /run/secrets/kong_postgres_password
-  #   secrets:
-  #     - kong_postgres_password
-  #   healthcheck:
-  #     test:
-  #       [
-  #         "CMD",
-  #         "pg_isready",
-  #         "-d",
-  #         "${KONG_PG_DATABASE:-kong}",
-  #         "-U",
-  #         "${KONG_PG_USER:-kong}",
-  #       ]
-  #     interval: 30s
-  #     timeout: 30s
-  #     retries: 3
-  #   restart: on-failure
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - kong_data:/var/lib/postgresql/data
+  # Kong Database Service
+  db:
+    image: postgres:9.5
+    profiles: ["database"]
+    environment:
+      POSTGRES_DB: ${KONG_PG_DATABASE:-kong}
+      POSTGRES_USER: ${KONG_PG_USER:-kong}
+      POSTGRES_PASSWORD_FILE: /run/secrets/kong_postgres_password
+    secrets:
+      - kong_postgres_password
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-d",
+          "${KONG_PG_DATABASE:-kong}",
+          "-U",
+          "${KONG_PG_USER:-kong}",
+        ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+    stdin_open: true
+    tty: true
+    volumes:
+      - kong_data:/var/lib/postgresql/data
 
-  # # User Management Service
+  # User Management Service
   user_service:
     build:
       context: ./services/user_service
@@ -114,13 +114,28 @@ services:
     volumes:
       - ./services/user_service:/code/
     depends_on:
-      # - postgres_db
+      - user_db
       - broker
       # - schema-registry
     ports:
       - "8030:8000"
 
-  # Product Management Service
+  # User DB Service
+  user_db:
+    image: postgres:latest
+    restart: always
+    container_name: user_db_container
+    environment:
+      - POSTGRES_USER=rehan
+      - POSTGRES_PASSWORD=rehan
+      - POSTGRES_DB=user_database
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_user_db:/var/lib/postgresql/data
+
+
+  # Product Producer Service
   product_service:
     build:
       context: ./services/product_service
@@ -128,13 +143,11 @@ services:
     volumes:
       - ./services/product_service:/code/
     depends_on:
-      # - postgres_db
+      - product_db
       - broker
       # - schema-registry
     ports:
-      - "8031:8031"
-
-
+      - "8031:8000"
 
   # Product Consumer Serivce
   product_db_service:
@@ -146,11 +159,12 @@ services:
     depends_on:
       - product_db
       - broker
+      - inventory_service
       # - schema-registry
     ports:
       - "8036:8000"
 
-  # Postgres DB Service
+  # Product Db Service
   product_db:
     image: postgres:latest
     restart: always
@@ -166,62 +180,122 @@ services:
       - postgres_product_db:/var/lib/postgresql/data
 
   # Payment Service
-  # payment_service:
-  #   build:
-  #     context: ./services/payment_service
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./services/payment_service:/code/
-  #   depends_on:
-  #     # - postgres_db
-  #     - broker
-  #     # - schema-registry
-  #   ports:
-  #     - "8032:8032"
+  payment_service:
+    build:
+      context: ./services/payment_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/payment_service:/code/
+    depends_on:
+      - payment_db
+      - broker
+      # - schema-registry
+    ports:
+      - "8032:8000"
 
-  # # Order Service
-  # order_service:
-  #   build:
-  #     context: ./services/order_service
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./services/order_service:/code/
-  #   depends_on:
-  #     # - postgres_db
-  #     - broker
-  #     # - schema-registry
-  #   ports:
-  #     - "8033:8033"
+  # payment db service
+  payment_db:
+    image: postgres:latest
+    restart: always
+    container_name: payment_db_container
+    environment:
+      - POSTGRES_USER=rehan
+      - POSTGRES_PASSWORD=rehan
+      - POSTGRES_DB=payment_database
 
-  # # Notification Service
-  # notification_service:
-  #   build:
-  #     context: ./services/notification_service
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./services/notification_service:/code/
-  #   depends_on:
-  #     # - postgres_db
-  #     - broker
-  #     # - schema-registry
-  #   ports:
-  #     - "8034:8034"
-
-  # # Inventory Service
-  # inventory_service:
-  #   build:
-  #     context: ./services/inventory_service
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./services/inventory_service:/code/
-  #   depends_on:
-  #     # - postgres_db
-  #     - broker
-  #     # - schema-registry
-  #   ports:
-  #     - "8035:8035"
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_payment_db:/var/lib/postgresql/data
 
 
+  # Order Service
+  order_service:
+    build:
+      context: ./services/order_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/order_service:/code/
+    depends_on:
+      - order_db
+      - broker
+      # - schema-registry
+    ports:
+      - "8033:8000"
+
+  # Order DB Service
+  order_db:
+    image: postgres:latest
+    restart: always
+    container_name: order_db_container
+    environment:
+      - POSTGRES_USER=rehan
+      - POSTGRES_PASSWORD=rehan
+      - POSTGRES_DB=orders_database
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_order_db:/var/lib/postgresql/data
+
+  # Notification Service
+  notification_service:
+    build:
+      context: ./services/notification_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/notification_service:/code/
+    depends_on:
+      - notification_db
+      - broker
+      # - schema-registry
+    ports:
+      - "8034:8000"
+
+    # Notification db service
+  notification_db:
+    image: postgres:latest
+    restart: always
+    container_name: notification_db_container
+    environment:
+      - POSTGRES_USER=rehan
+      - POSTGRES_PASSWORD=rehan
+      - POSTGRES_DB=notification_database
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres_notification_db:/var/lib/postgresql/data
+
+
+
+  # Inventory Service
+  inventory_service:
+    build:
+      context: ./services/inventory_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/inventory_service:/code/
+    depends_on:
+      - inventory_db
+      - broker
+      # - schema-registry
+    ports:
+      - "8035:8000"
+
+
+  # Inventory db service
+  inventory_db:
+    image: postgres:latest
+    restart: always
+    container_name: inventory_db_container
+    environment:
+      - POSTGRES_USER=rehan
+      - POSTGRES_PASSWORD=rehan
+      - POSTGRES_DB=inventory_database
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_inventory_db:/var/lib/postgresql/data
+      
 
   # Kafka Broker Service
   broker:
@@ -279,8 +353,6 @@ secrets:
     file: ./kong/services/POSTGRES_PASSWORD
 
 volumes:
-  postgres_product_db:
-    driver: local
   kong_data: {}
   kong_prefix_vol:
     driver_opts:
@@ -290,6 +362,24 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+  
+  postgres_product_db:
+    driver: local
+
+  postgres_order_db:
+    driver: local
+
+  postgres_inventory_db:
+    driver: local
+  
+  postgres_payment_db:
+    driver: local
+  
+  postgres_user_db:
+    driver: local
+  
+  postgres_notification_db:
+    driver: local
 
 networks:
   default:

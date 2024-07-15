@@ -8,14 +8,15 @@ class ProductAdd(SQLModel):
     product_description: str
     price: float
     currency: str
-    stock: int
     category: str
     brand: str
+    product_code: str
 
 
 class ProductEdit(ProductAdd):
     """ Edit Product Model """
     product_id: int
+
 
 class Product(SQLModel, table=True):
     """ Product Model """
@@ -24,8 +25,8 @@ class Product(SQLModel, table=True):
     product_description: str = Field()
     price: float = Field()
     currency: str = Field()
-    stock: int = Field()
+    stock: int | None = Field(default=0)
     category: str = Field()
     brand: str = Field()
-
+    product_code: str = Field()
 # end-of-file(EOF)

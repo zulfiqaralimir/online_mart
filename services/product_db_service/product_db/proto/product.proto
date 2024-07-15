@@ -6,17 +6,15 @@ message Product {
     string product_description = 3;
     float price = 4;
     string currency = 5;
-    int32 stock = 6;
-    string category = 7;
-    string brand = 8;
+    string category = 6;
+    string brand = 7;
+    string product_code = 8;
 }
 
 enum MessageType {
     add_product = 0;
     edit_product = 1;
     delete_product = 2;
-    get_all_products = 3;
-    get_product_by_id = 4;
 }
 
 message ProductMessage {

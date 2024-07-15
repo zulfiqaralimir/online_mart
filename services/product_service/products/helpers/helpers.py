@@ -4,7 +4,12 @@ from products.setting import KAFKA_PRODUCT_TOPIC
 from products.proto import product_pb2
 
 
-async def send_product_message(producer: AIOKafkaProducer, message_type: product_pb2.MessageType, product_data = None, product_id = None):
+async def send_product_message(
+        producer: AIOKafkaProducer,
+        message_type: product_pb2.MessageType,
+        product_data=None,
+        product_id=None
+):
     """ Helper function to send product message to Kafka """
     if product_data is not None:
         product_proto = product_pb2.Product(
@@ -13,9 +18,9 @@ async def send_product_message(producer: AIOKafkaProducer, message_type: product
             product_description=product_data['product_description'],
             price=product_data['price'],
             currency=product_data['currency'],
-            stock=product_data['stock'],
             category=product_data['category'],
-            brand=product_data['brand']
+            brand=product_data['brand'],
+            product_code=product_data['product_code']
         )
 
         product_message = product_pb2.ProductMessage(
@@ -29,8 +34,10 @@ async def send_product_message(producer: AIOKafkaProducer, message_type: product
             product_id=product_id
         )
     serialized_message = product_message.SerializeToString()
-    
+
     try:
         await producer.send_and_wait(KAFKA_PRODUCT_TOPIC, serialized_message)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to send message to Kafka: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to send message to Kafka: {e}")
+# end-of-file

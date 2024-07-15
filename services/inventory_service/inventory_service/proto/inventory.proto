@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message InventoryUpdate {
+    int32 inv_id = 1;
+    string product_code = 2;
+    int32 stock_available = 3;
+    // int32 total_stock = 3;
+    // int32 stock_in_orders = 4;
+    // int32 damaged = 5;
+    // int32 delivered = 6;
+    // int32 returned = 7;
+}

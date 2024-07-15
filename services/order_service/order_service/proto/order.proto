@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+
+// Define the message for OrderItem
+message OrderItem {
+  optional int32 order_item_id = 1;
+  optional string order_id = 2;
+  string product_code = 3;
+  string product_name = 4;
+  string product_description = 5;
+  int32 quantity = 6;
+  float unit_price = 7;
+  float total_price = 8;
+}
+
+//enum for order status
+enum OrderStatus {
+  created = 0;
+  in_progress = 1;
+  shipped = 2;
+  completed = 3;
+  cancelled = 4;
+  disputed = 5;
+}
+
+// enum for payment status
+enum PaymentStatus {
+  pending = 0;
+  success = 1;
+  failed = 2;
+}
+
+// enum for shipping status
+enum ShippingStatus {
+  processing = 0;
+  in_transit = 1;
+  delivered = 2;
+  returned = 3;
+}
+
+// Define the message for Order
+message Order {
+  string order_id = 1;
+  int32 user_id = 2;
+  optional google.protobuf.Timestamp order_date = 3;
+  float order_value = 4;
+  string currency = 5;
+  optional OrderStatus order_status = 6;
+  optional PaymentStatus payment_status = 7;
+  optional ShippingStatus shipping_status = 8;
+  repeated OrderItem order_items = 9;
+}
+
+// Define the message for MessageType
+enum MessageType {
+    create_order = 0;
+    edit_order = 1;
+    delete_order = 2;
+    cancel_order = 3;
+}
+
+// Define the message for OrderMessage
+message OrderMessage {
+    MessageType message_type = 1;
+    optional Order order_data = 2;
+    optional string order_id = 3;
+
+}

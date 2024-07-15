@@ -18,3 +18,4 @@ def get_session():
     """ Function to get session """
     with Session(engine) as session:
         yield session
+# end-of-file(EOF)

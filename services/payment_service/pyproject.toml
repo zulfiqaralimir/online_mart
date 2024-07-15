@@ -9,6 +9,10 @@ readme = "README.md"
 python = "^3.12"
 fastapi = "^0.111.0"
 sqlmodel = "^0.0.18"
+stripe = "^10.3.0"
+aiokafka = "^0.11.0"
+psycopg = {extras = ["bianry"], version = "^3.2.1"}
+protobuf = "^5.27.2"
 
 
 [build-system]

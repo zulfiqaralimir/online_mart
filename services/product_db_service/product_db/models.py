@@ -9,10 +9,8 @@ class Product(SQLModel, table=True):
     product_description: str = Field()
     price: float = Field()
     currency: str = Field()
-    stock: int = Field()
+    stock: int | None = Field(default=0)
     category: str = Field()
     brand: str = Field()
+    product_code: str = Field()
 
-
-class Test(SQLModel, table=True):
-    title: str = Field(primary_key=True)

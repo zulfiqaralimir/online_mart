@@ -14,17 +14,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/product.proto\"\xb6\x01\n\x07Product\x12\x17\n\nproduct_id\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x15\n\rproduct_title\x18\x02 \x01(\t\x12\x1b\n\x13product_description\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x02\x12\x10\n\x08\x63urrency\x18\x05 \x01(\t\x12\r\n\x05stock\x18\x06 \x01(\x05\x12\x10\n\x08\x63\x61tegory\x18\x07 \x01(\t\x12\r\n\x05\x62rand\x18\x08 \x01(\tB\r\n\x0b_product_id\"\x92\x01\n\x0eProductMessage\x12\"\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x0c.MessageType\x12#\n\x0cproduct_data\x18\x02 \x01(\x0b\x32\x08.ProductH\x00\x88\x01\x01\x12\x17\n\nproduct_id\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\x0f\n\r_product_dataB\r\n\x0b_product_id*q\n\x0bMessageType\x12\x0f\n\x0b\x61\x64\x64_product\x10\x00\x12\x10\n\x0c\x65\x64it_product\x10\x01\x12\x12\n\x0e\x64\x65lete_product\x10\x02\x12\x14\n\x10get_all_products\x10\x03\x12\x15\n\x11get_product_by_id\x10\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/product.proto\"\xbd\x01\n\x07Product\x12\x17\n\nproduct_id\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x15\n\rproduct_title\x18\x02 \x01(\t\x12\x1b\n\x13product_description\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x02\x12\x10\n\x08\x63urrency\x18\x05 \x01(\t\x12\x10\n\x08\x63\x61tegory\x18\x06 \x01(\t\x12\r\n\x05\x62rand\x18\x07 \x01(\t\x12\x14\n\x0cproduct_code\x18\x08 \x01(\tB\r\n\x0b_product_id\"\x92\x01\n\x0eProductMessage\x12\"\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x0c.MessageType\x12#\n\x0cproduct_data\x18\x02 \x01(\x0b\x32\x08.ProductH\x00\x88\x01\x01\x12\x17\n\nproduct_id\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\x0f\n\r_product_dataB\r\n\x0b_product_id*D\n\x0bMessageType\x12\x0f\n\x0b\x61\x64\x64_product\x10\x00\x12\x10\n\x0c\x65\x64it_product\x10\x01\x12\x12\n\x0e\x64\x65lete_product\x10\x02\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'proto.product_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_MESSAGETYPE']._serialized_start=357
-  _globals['_MESSAGETYPE']._serialized_end=470
+  _globals['_MESSAGETYPE']._serialized_start=364
+  _globals['_MESSAGETYPE']._serialized_end=432
   _globals['_PRODUCT']._serialized_start=24
-  _globals['_PRODUCT']._serialized_end=206
-  _globals['_PRODUCTMESSAGE']._serialized_start=209
-  _globals['_PRODUCTMESSAGE']._serialized_end=355
+  _globals['_PRODUCT']._serialized_end=213
+  _globals['_PRODUCTMESSAGE']._serialized_start=216
+  _globals['_PRODUCTMESSAGE']._serialized_end=362
 # @@protoc_insertion_point(module_scope)

@@ -31,7 +31,7 @@ async def get_products (session: Annotated[Session, Depends(get_session)]):
         raise HTTPException(status_code=404, detail="No Product found")
 
 async def get_single_product (session: Annotated[Session, Depends(get_session)], id: int | None = None):
-    """ Function to get all products from database """
+    """ Function to get single product from database """
     if id:
         product = session.exec(select(Product).where(Product.product_id == id)).first()
         if product:
@@ -46,3 +46,4 @@ async def get_single_product (session: Annotated[Session, Depends(get_session)],
             return product
         else:
             raise HTTPException (status_code=404, detail = "No Product found")
+# end-of-file(EOF)

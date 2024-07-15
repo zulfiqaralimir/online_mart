@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+message UserProfile {
+    string username = 1;
+    int32 user_id = 2;
+    string name = 3;
+    string email = 4;
+    string phone = 5;
+    string shipping_address = 6;
+    string payment_token = 7;
+}
+
+enum MessageT {
+    add_user = 0;
+    edit_user = 1;
+    delete_user = 2;
+}
+
+
+message UserMessage {
+    MessageT message_type = 1;
+    optional UserProfile profile_data = 2;
+    optional int32 user_id = 3; 
+}
