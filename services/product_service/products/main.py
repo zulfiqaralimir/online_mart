@@ -34,7 +34,7 @@ async def root():
     return {"message": "Product Management Service"}
 
 
-@app.post("/product")
+@app.post("/products")
 async def add_product(
     product: ProductAdd,
     producer: Annotated[AIOKafkaProducer, Depends(kafka_producer)],
@@ -54,7 +54,7 @@ async def add_product(
 
 
 # edit product
-@app.put("/product/{product_id}", response_model=Product)
+@app.put("/products/{product_id}")
 async def edit_product(
     product: ProductEdit,
     product_id: int,
@@ -82,7 +82,7 @@ async def edit_product(
             status_code=404, detail=f"No Product found with id:{product_id}")
 
 
-@app.delete("/product/{product_id}")
+@app.delete("/products/{product_id}")
 async def delete_product(
     product_id: int,
     producer: Annotated[AIOKafkaProducer, Depends(kafka_producer)],
@@ -106,13 +106,13 @@ async def delete_product(
             status_code=404, detail=f"No Product found with id:{product_id}")
 
 
-@app.get("/product", response_model=list[Product])
+@app.get("/products", response_model=list[Product])
 async def get_all_products(session: Annotated[Session, Depends(get_session)]):
     """ Function to get all products from database """
     return await get_products(session)
 
 
-@app.get("/product/{product_id}", response_model=Product)
+@app.get("/products/{product_id}", response_model=Product)
 async def get_product_by_id(product_id: int, session: Annotated[Session, Depends(get_session)]):
     """ Function to get all products from database """
     return await get_single_product(session, id=product_id)

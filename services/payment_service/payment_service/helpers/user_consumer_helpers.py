@@ -30,6 +30,8 @@ async def handle_user_message(user_message):
         elif user_message.message_type == user_pb2.MessageT.edit_user:
             user_data = user_message.profile_data
             user = await db.edit_user_in_db(user_data)
+            if user is None:
+                raise HTTPException(status_code=404, detail="User not found")
 
         elif user_message.message_type == user_pb2.MessageT.delete_user:
             user_id = user_message.user_id

@@ -74,7 +74,7 @@ async def process_payment(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/payments/retry_payment", response_model=models.PaymentResponse)
+@app.post("/payments/retry_payment", response_model=models.PaymentResponse | dict[str, str])
 async def retry_payment(
     payment: models.PaymentRequest,
     producer: Annotated[AIOKafkaProducer, Depends(create_payment_producer)]
@@ -85,6 +85,9 @@ async def retry_payment(
             raise HTTPException(
                 status_code=404, detail="Payment Record not found")
 
+        if existing_payment.payment_status == "success":
+            return {"message": "Payment Already Successfull"}
+        
         if existing_payment.payment_status == "failed":
             payment_request_result = await create_payment(payment)
             existing_payment.payment_status = payment_request_result.payment_status

@@ -119,6 +119,8 @@ services:
       # - schema-registry
     ports:
       - "8030:8000"
+    networks:
+      - default
 
   # User DB Service
   user_db:
@@ -133,6 +135,8 @@ services:
       - "5436:5432"
     volumes:
       - postgres_user_db:/var/lib/postgresql/data
+    networks:
+      - default
 
 
   # Product Producer Service
@@ -350,7 +354,7 @@ services:
 
 secrets:
   kong_postgres_password:
-    file: ./kong/services/POSTGRES_PASSWORD
+    file: ./Kong/POSTGRES_PASSWORD
 
 volumes:
   kong_data: {}

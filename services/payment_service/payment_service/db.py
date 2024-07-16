@@ -64,7 +64,7 @@ async def edit_user_in_db(user_data: models.Users):
             logger.info(f"inside db edit_user_in_db {user_data.user_id}")
             existing_user = await get_user_from_db(user_data.user_id)
             if existing_user is None:
-                raise HTTPException(status_code=404, detail="User not found")
+                return HTTPException(status_code=404, detail="User not found")
 
             # update existing user in db
             existing_user.email = user_data.email

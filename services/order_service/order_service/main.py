@@ -74,7 +74,7 @@ async def read_single_order(order_id: str):
 
 
 # Read all orders
-@app.get("/orders/", response_model=list[OrderResponse])
+@app.get("/orders", response_model=list[OrderResponse])
 async def read_all_order():
     """ read order from db """
     db_orders = await get_all_orders_from_db()

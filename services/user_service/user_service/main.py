@@ -73,6 +73,7 @@ async def regiser_user(
     new_user: Annotated[Register_User, Depends()],
     session: Annotated[Session, Depends(get_session)]
 ):
+    logger.info(f"new_user: {new_user}")
     db_user = auth.get_user_from_db(session, new_user.username, new_user.email)
     if db_user:
         raise HTTPException(
@@ -177,7 +178,7 @@ async def get_user_profile(
 
 
 # edit user profile
-@app.put('/profile/', response_model=ProfileResponse)
+@app.put('/profile', response_model=ProfileResponse)
 async def edit_user_profile(
     current_user: Annotated[User, Depends(auth.current_user)],
     user_data: ProfileData,
