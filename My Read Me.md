@@ -22,14 +22,14 @@
    - Click the green "Code" button.
    - Copy the URL (e.g., `https://github.com/username/repository.git`).
 
-5. **Clone the Repository**
+5. ## **Clone the Repository**
    - Use the `git clone` command followed by the repository URL.
      ```sh
      git clone https://github.com/username/repository.git
      ```
    - This will create a directory with the repository name and download all files.
 
-6. **Verify the Cloned Repository**
+6. ## **Verify the Cloned Repository**
    - Navigate into the newly created directory.
      ```sh
      cd repository
