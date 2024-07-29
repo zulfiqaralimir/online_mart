@@ -202,3 +202,105 @@ Here's the full process in your Git Bash environment:
    Open and check `combined.py` to ensure it includes all the code from the `.py` files in your directory.
 
 This process will concatenate all `.py` files in the directory into a single `combined.py` file. Make sure to review the combined file to ensure everything is in the correct order and all dependencies are properly managed.
+
+
+
+
+It looks like the `combine_script.py` file is not found in your current directory. Let's ensure the script is created correctly and run it from the correct directory. Here are the steps to follow:
+
+1. **Ensure You Are in the Correct Directory**
+
+   Double-check that you are in the correct directory where your Python files are located:
+   ```sh
+   cd ~/Documents/zia\ mart\ r/online_mart
+   ```
+
+2. **Create the `combine_script.py` File**
+
+   Use a text editor to create and save the `combine_script.py` file. If you haven't done so, you can create it using the following command:
+   ```sh
+   nano combine_script.py
+   ```
+
+3. **Paste the Script Content into `combine_script.py`**
+
+   Copy and paste the following Python script into the `combine_script.py` file:
+   ```python
+   import os
+
+   def combine_files(directory, output_file):
+       with open(output_file, 'w') as outfile:
+           for filename in os.listdir(directory):
+               if filename.endswith('.py') and filename != output_file:
+                   with open(os.path.join(directory, filename), 'r') as infile:
+                       outfile.write(f"\n# {filename}\n")
+                       outfile.write(infile.read())
+                       outfile.write("\n")
+
+   if __name__ == "__main__":
+       combine_files('.', 'combined.py')
+   ```
+
+4. **Save and Close the File in Nano**
+
+   In the nano editor, save the file by pressing `Ctrl + O`, then press `Enter` to confirm. Exit the editor by pressing `Ctrl + X`.
+
+5. **Run the `combine_script.py` Script**
+
+   Now, run the script using Python:
+   ```sh
+   python combine_script.py
+   ```
+
+### Troubleshooting
+
+If the script still can't be found, check the following:
+
+- **File Location**: Ensure `combine_script.py` is indeed in the directory you are running the command from. You can list files in the directory to confirm:
+  ```sh
+  ls
+  ```
+
+- **Correct Path**: If you are not in the correct directory, navigate to the directory where `combine_script.py` is located.
+
+- **File Extension**: Ensure the file has the correct `.py` extension.
+
+### Example Steps Recap:
+
+1. **Navigate to the Correct Directory**:
+   ```sh
+   cd ~/Documents/zia\ mart\ r/online_mart
+   ```
+
+2. **Create `combine_script.py`**:
+   ```sh
+   nano combine_script.py
+   ```
+
+3. **Paste the Script Content**:
+   ```python
+   import os
+
+   def combine_files(directory, output_file):
+       with open(output_file, 'w') as outfile:
+           for filename in os.listdir(directory):
+               if filename.endswith('.py') and filename != output_file:
+                   with open(os.path.join(directory, filename), 'r') as infile:
+                       outfile.write(f"\n# {filename}\n")
+                       outfile.write(infile.read())
+                       outfile.write("\n")
+
+   if __name__ == "__main__":
+       combine_files('.', 'combined.py')
+   ```
+
+4. **Save and Close the File**:
+   - Press `Ctrl + O`, then press `Enter`.
+   - Press `Ctrl + X` to exit nano.
+
+5. **Run the Script**:
+   ```sh
+   python combine_script.py
+   ```
+
+This should properly combine all Python files in your directory into `combined.py`. If you encounter any issues, please let me know the exact error message or problem you're facing, and I'll help troubleshoot further.
