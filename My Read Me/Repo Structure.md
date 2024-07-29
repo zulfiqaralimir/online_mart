@@ -1,4 +1,6 @@
-To show all the files in a GitHub repository to me, you can provide the repository's structure. If you have a large number of files, you can use a command to list the directory contents and share the output. Here's how you can do it step-by-step:
+To show all the files in a GitHub repository to me, you can provide the repository's structure. 
+
+If you have a large number of files, you can use a command to list the directory contents and share the output. Here's how you can do it step-by-step:
 
 ### Step-by-Step Guide
 
